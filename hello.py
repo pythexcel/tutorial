@@ -16,6 +16,7 @@ from flask_pymongo import PyMongo
 
 from bson.objectid import ObjectId
 
+from . import db
 
 app = Flask(__name__)
 app.config["MONGO_URI"] = "mongodb://localhost:27017/todo"
