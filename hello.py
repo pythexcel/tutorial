@@ -5,25 +5,24 @@ from flask_jwt_extended import (
     get_jwt_identity, get_current_user, verify_jwt_in_request,
     jwt_optional
 )
-from passlib.hash import pbkdf2_sha256
+
+from flask_pymongo import PyMongo
 
 from functools import wraps
 
-import uuid
+mongo = PyMongo()
 
-from . import db
-
+# def create_app():
 app = Flask(__name__)
+
+app.config["MONGO_URI"] = "mongodb://localhost:27017/todo"
 
 print("hello py called")
 
-mongo = db.init_db(app)
+mongo.init_app(app)
 
 app.config['JWT_SECRET_KEY'] = 'xxxxxxxxxxxxxx'  # Change this!
 jwt = JWTManager(app)
-
-
-tasks = []
 
 app.config["users"] = []
 
@@ -59,17 +58,16 @@ def admin_required(fn):
         return jsonify(msg='Admins only!'), 403
     return wrapper
 
-
-
 from . import auth
 from . import todo
 
 app.register_blueprint(auth.bp)
 app.register_blueprint(todo.bp)
 
-
 @app.route("/admin_only")
 @jwt_required
 @admin_required
 def admin_only():
     return ""
+
+# return app

@@ -13,9 +13,7 @@ from bson.objectid import ObjectId
 
 import datetime
 
-from . import db
-
-from . import hello
+from .hello import mongo
 
 
 bp = Blueprint('todo', __name__, url_prefix='/todo')
@@ -26,7 +24,6 @@ bp = Blueprint('todo', __name__, url_prefix='/todo')
 @bp.route('/<string:direction>', methods=["GET"])
 @jwt_optional
 def todo(direction=None):
-    mongo = hello.mongo
     # direction is optional
     current_user = get_current_user()
     if direction == "ASC":

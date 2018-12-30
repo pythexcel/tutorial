@@ -12,6 +12,8 @@ from flask_jwt_extended import (
     jwt_optional
 )
 
+from .hello import mongo
+
 
 bp = Blueprint('auth', __name__, url_prefix='/auth')
 
