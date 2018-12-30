@@ -15,7 +15,7 @@ from . import db
 
 app = Flask(__name__)
 
-mongo = db.init_db(app)
+db.init_db(app)
 
 app.config['JWT_SECRET_KEY'] = 'xxxxxxxxxxxxxx'  # Change this!
 jwt = JWTManager(app)
@@ -60,9 +60,10 @@ def admin_required(fn):
 
 
 from . import auth
+from . import todo
 
 app.register_blueprint(auth.bp)
-
+app.register_blueprint(todo.bp)
 
 
 @app.route("/admin_only")
