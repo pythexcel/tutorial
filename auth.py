@@ -1,5 +1,5 @@
 from flask import (
-    Blueprint , request, abort, jsonify
+    Blueprint , request, abort, jsonify, g, current_app
 )
 
 import uuid
@@ -14,10 +14,10 @@ from flask_jwt_extended import (
 
 bp = Blueprint('auth', __name__, url_prefix='/auth')
 
-users = []
-
 @bp.route('/register', methods=['POST'])
 def register():
+
+    users = current_app.config["users"]
     if not request.json:
         abort(500)
 
@@ -27,8 +27,6 @@ def register():
 
     if username is None or password is None or name is None:
         abort(500)
-
-    global users
 
     users = [user for user in users if user["username"] == username]
 
@@ -45,6 +43,8 @@ def register():
         "name": name
     })
 
+    current_app.config["users"] = users
+
     return jsonify(id)
 
 @bp.route('/login', methods=['POST'])
@@ -59,7 +59,8 @@ def login():
     if not password:
         return jsonify({"msg": "Missing password parameter"}), 500
 
-    global users
+    users = current_app.config["users"]
+    print(users)
     users = [user for user in users if user["username"] == username]
 
     if len(users) == 0:

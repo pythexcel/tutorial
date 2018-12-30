@@ -26,12 +26,7 @@ jwt = JWTManager(app)
 
 tasks = []
 
-users = []
-
-from . import auth
-
-app.register_blueprint(auth.bp)
-
+app.config["users"] = []
 
 # Create a function that will be called whenever create_access_token
 # is used. It will take whatever object is passed into the
@@ -44,7 +39,7 @@ def user_identity_lookup(user):
 
 @jwt.user_loader_callback_loader
 def user_loader_callback(identity):
-    global users
+    users = app.config["users"]
     users = [user for user in users if user["id"] == identity]
     if len(users) > 0:
         if users[0]["username"] == "manish":
@@ -64,6 +59,13 @@ def admin_required(fn):
 
         return jsonify(msg='Admins only!'), 403
     return wrapper
+
+
+
+from . import auth
+
+app.register_blueprint(auth.bp)
+
 
 
 @app.route("/admin_only")
