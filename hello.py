@@ -12,15 +12,13 @@ from functools import wraps
 
 import uuid
 
-from flask_pymongo import PyMongo
-
 from bson.objectid import ObjectId
 
 from . import db
 
 app = Flask(__name__)
-app.config["MONGO_URI"] = "mongodb://localhost:27017/todo"
-mongo = PyMongo(app)
+
+mongo = db.init_db(app)
 
 app.config['JWT_SECRET_KEY'] = 'xxxxxxxxxxxxxx'  # Change this!
 jwt = JWTManager(app)
