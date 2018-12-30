@@ -13,7 +13,9 @@ from bson.objectid import ObjectId
 
 import datetime
 
-from .hello import mongo,admin_required
+from .hello import mongo
+
+from .jwt import admin_required
 
 
 bp = Blueprint('todo', __name__, url_prefix='/todo')
