@@ -12,6 +12,7 @@ from flask_jwt_extended import (
     jwt_optional
 )
 
+
 bp = Blueprint('auth', __name__, url_prefix='/auth')
 
 @bp.route('/register', methods=['POST'])
