@@ -72,3 +72,14 @@ def login():
 
     access_token = create_access_token(identity=user)
     return jsonify(access_token=access_token), 200
+
+# Protect a view with jwt_required, which requires a valid access token
+# in the request to access.
+
+
+@bp.route('/profile', methods=['GET'])
+@jwt_required
+def profile():
+    # Access the identity of the current user with get_current_user
+    current_user = get_current_user()
+    return jsonify(logged_in_as=current_user), 200
