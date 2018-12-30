@@ -61,11 +61,3 @@ from . import todo
 
 app.register_blueprint(auth.bp)
 app.register_blueprint(todo.bp)
-
-@app.route("/admin_only")
-@jwt_required
-@admin_required
-def admin_only():
-    return ""
-
-# return app

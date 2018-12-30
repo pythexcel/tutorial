@@ -13,7 +13,7 @@ from bson.objectid import ObjectId
 
 import datetime
 
-from .hello import mongo
+from .hello import mongo,admin_required
 
 
 bp = Blueprint('todo', __name__, url_prefix='/todo')
@@ -133,17 +133,30 @@ def mark(task, status, task_id):
     return task
 
 
-# @bp.route("/mark/<int:task_id>/<int:status>", methods=["PUT"])
-# @jwt_required
-# @admin_required
-# def mark_task(task_id, status):
+@bp.route("/mark/<int:task_id>/<int:status>", methods=["PUT"])
+@jwt_required
+@admin_required
+def mark_task(task_id, status):
 
-#     global tasks
-#     if status == 1:
-#         status = True
-#     else:
-#         status = False
+    tasks = []
 
-#     tasks = [mark(task, status, task_id) for task in tasks]
+    # this needs to be done via mongodb. we can do it later on
+    # for now this is a sample code
+    if status == 1:
+        status = True
+    else:
+        status = False
 
-#     return jsonify(tasks)
+    tasks = [mark(task, status, task_id) for task in tasks]
+
+    return jsonify(tasks)
+
+
+
+@bp.route("/admin_only")
+@jwt_required
+@admin_required
+def admin_only():
+    return ""
+
+# return app
