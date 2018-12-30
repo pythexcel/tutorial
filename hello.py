@@ -10,16 +10,14 @@ from flask_pymongo import PyMongo
 
 from functools import wraps
 
-mongo = PyMongo()
-
 # def create_app():
 app = Flask(__name__)
 
-app.config["MONGO_URI"] = "mongodb://localhost:27017/todo"
+from . import db
+
+mongo = db.init_db(app)
 
 print("hello py called")
-
-mongo.init_app(app)
 
 app.config['JWT_SECRET_KEY'] = 'xxxxxxxxxxxxxx'  # Change this!
 jwt = JWTManager(app)
