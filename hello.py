@@ -15,7 +15,9 @@ from . import db
 
 app = Flask(__name__)
 
-db.init_db(app)
+print("hello py called")
+
+mongo = db.init_db(app)
 
 app.config['JWT_SECRET_KEY'] = 'xxxxxxxxxxxxxx'  # Change this!
 jwt = JWTManager(app)

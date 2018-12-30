@@ -15,6 +15,9 @@ import datetime
 
 from . import db
 
+from . import hello
+
+
 bp = Blueprint('todo', __name__, url_prefix='/todo')
 
 
@@ -23,8 +26,8 @@ bp = Blueprint('todo', __name__, url_prefix='/todo')
 @bp.route('/<string:direction>', methods=["GET"])
 @jwt_optional
 def todo(direction=None):
+    mongo = hello.mongo
     # direction is optional
-    mongo = db.get_db()
     current_user = get_current_user()
     if direction == "ASC":
         direction = 1
@@ -56,7 +59,6 @@ def todo(direction=None):
 @bp.route('/', methods=["POST"])
 @jwt_optional
 def add_todo():
-    mongo = db.get_db()
     if not request.json:
         abort(500)
 
@@ -92,7 +94,6 @@ def add_todo():
 @bp.route("/<string:id>", methods=['PUT'])
 @jwt_optional
 def update_todo(id):
-    mongo = db.get_db()
     if not request.json:
         abort(500)
 
@@ -121,7 +122,6 @@ def update_todo(id):
 
 @bp.route("/<string:id>", methods=["DELETE"])
 def delete_todo(id):
-    mongo = db.get_db()
     ret = mongo.db.tasks.remove({
         "_id" : ObjectId(id)
     })
