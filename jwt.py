@@ -10,7 +10,6 @@ from functools import wraps
 
 
 def init_jwt(app):
-    app.config['JWT_SECRET_KEY'] = 'xxxxxxxxxxxxxx'  # Change this!
     jwt = JWTManager(app)
     # Create a function that will be called whenever create_access_token
     # is used. It will take whatever object is passed into the
