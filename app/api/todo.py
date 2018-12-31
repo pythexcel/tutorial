@@ -1,5 +1,5 @@
 from flask import (
-    Blueprint , request, abort, jsonify, g, current_app
+    Blueprint, request, abort, jsonify, g, current_app
 )
 
 from flask_jwt_extended import (
@@ -13,13 +13,12 @@ from bson.objectid import ObjectId
 
 import datetime
 
-from .hello import mongo
+from app import mongo
 
-from .token import admin_required
+from app.token import admin_required
 
 
 bp = Blueprint('todo', __name__, url_prefix='/todo')
-
 
 
 @bp.route('/', methods=["GET"])
@@ -122,7 +121,7 @@ def update_todo(id):
 @bp.route("/<string:id>", methods=["DELETE"])
 def delete_todo(id):
     ret = mongo.db.tasks.remove({
-        "_id" : ObjectId(id)
+        "_id": ObjectId(id)
     })
 
     return jsonify(ret)
@@ -152,7 +151,6 @@ def mark_task(task_id, status):
     tasks = [mark(task, status, task_id) for task in tasks]
 
     return jsonify(tasks)
-
 
 
 @bp.route("/admin_only")
