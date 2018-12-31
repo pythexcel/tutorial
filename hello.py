@@ -1,12 +1,14 @@
 from flask import Flask
+from . import db
+
+mongo = db.init_db()
 
 
 def create_app():
     app = Flask(__name__)
     app.config.from_pyfile('config.py', silent=True)
 
-    from . import db
-    mongo = db.init_db(app)
+    db.init_app(app, mongo)
 
     from . import jwt
     jwt = jwt.init_jwt(app)
