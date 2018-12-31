@@ -9,8 +9,13 @@ from flask import jsonify
 from functools import wraps
 
 
-def init_jwt(app):
-    jwt = JWTManager(app)
+def create_jwt():
+    jwt = JWTManager()
+    return jwt
+
+
+def init_jwt(jwt, app):
+    jwt.init_app(app)
     # Create a function that will be called whenever create_access_token
     # is used. It will take whatever object is passed into the
     # create_access_token method, and lets us define what custom claims

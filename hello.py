@@ -1,7 +1,9 @@
 from flask import Flask
 from flask_pymongo import PyMongo
 
+from . import token
 mongo = PyMongo()
+jwt = token.create_jwt()
 
 def create_app():
     app = Flask(__name__)
@@ -9,8 +11,8 @@ def create_app():
 
     mongo.init_app(app)
 
-    from . import jwt
-    jwt = jwt.init_jwt(app)
+    
+    token.init_jwt(jwt, app)
 
     print("hello py called")
 
