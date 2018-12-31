@@ -1,24 +1,24 @@
 from flask import Flask
 
 
-# def create_app():
-app = Flask(__name__)
+def create_app():
+    app = Flask(__name__)
+    app.config.from_pyfile('config.py', silent=True)
 
-app.config.from_pyfile('config.py', silent=True)
+    from . import db
+    mongo = db.init_db(app)
 
+    from . import jwt
+    jwt = jwt.init_jwt(app)
 
-from . import db
-mongo = db.init_db(app)
+    print("hello py called")
 
-from . import jwt
-jwt = jwt.init_jwt(app)
+    app.config["users"] = []
 
-print("hello py called")
+    from . import auth
+    app.register_blueprint(auth.bp)
 
-app.config["users"] = []
+    from . import todo
+    app.register_blueprint(todo.bp)
 
-from . import auth
-app.register_blueprint(auth.bp)
-
-from . import todo
-app.register_blueprint(todo.bp)
+    return app
